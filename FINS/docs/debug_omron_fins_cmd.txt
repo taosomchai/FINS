@@ -1,0 +1,66 @@
+9/2/2017  2:56:27:053 PM  TX: 80 00 02 00 01 00 00 22 00 03 01 01 82 00 00 00 00 07 
+									DM0   7 word
+    // header
+    0x80, //(ICF) Display frame information: 1000 0001
+    0x00, //(RSV) Reserved by system: (hex)00
+    0x02, //(GCT) Permissible number of gateways: (hex)02
+    0x00, //(DNA) Destination network address: (hex)00, local network
+    0x01, //(DA1) Destination node address: (hex)01, local PLC node selecter switch
+    0x00, //(DA2) Destination unit address: (hex)00, PLC       unit selecter switch
+    0x00, //(SNA) Source network address: (hex)00, local network
+    0x22, //(SA1) Source node address: (hex)22, PC's IP is 192.168.250.34
+    0x00, //(SA2) Source unit address: (hex)00, PC only has one ethernet
+    0x03, //(SID) Service ID: just give a random number 19
+
+    // command
+    0x01, //(MRC) Main request code: 01, memory area write
+    0x02, //(SRC) Sub-request code: 02, memory area write
+    
+    //Note form document 
+    // MRC   SRC
+    // 0x01, 0x01	Memory area read
+    // 0x01, 0x02	Memory area write
+    // 0x01, 0x03	Memory area fill
+    // 0x01, 0x04	Multiple memory area read
+    // 0x01, 0x05	Memory area transfer
+
+    0x01, 0x01		//Memory Area Read
+    0x82		//Memory area code, 2 byte: 82(DM)
+    0x00, 0x00, 0x00	//Read start address DM0
+    0x00, 0x07		// 7 word
+
+
+    // parameter/data field
+    0x82, //Memory area code, 2 bytes: 82(DM)
+    0x00, //Write start address DM100
+    0x64,
+    0x00,
+    0x00, //Word write: only one address
+    0x01,
+    0x00, //Write value of 1 to address DM100 (0000 0000 0000 0001)
+    0x01, // - this value is 0xaabbccdd -> cc dd aa bb
+    0x00, 
+    0x00, 
+									
+9/2/2017  2:56:27:062 PM  RX: C0 00 02 00 22 00 00 01 00 03 01 01 00 00 12 46 00 01 00 02 00 03 00 04 00 05 00 06 
+
+
+9/2/2017  2:56:27:113 PM  TX: 80 00 02 00 01 00 00 22 00 03 01 01 82 00 00 00 00 07 
+9/2/2017  2:56:27:124 PM  RX: C0 00 02 00 22 00 00 01 00 03 01 01 00 00 12 46 00 01 00 02 00 03 00 04 00 05 00 06 
+
+
+
+//read DM4 = 4
+9/2/2017  3:24:58:614 PM  TX: 80 00 02 00 01 00 00 22 00 03 01 01 82 00 04 00 00 01 
+9/2/2017  3:24:58:624 PM  RX: C0 00 02 00 22 00 00 01 00 03 01 01 00 00 00 04 
+9/2/2017  3:24:58:674 PM  TX: 80 00 02 00 01 00 00 22 00 03 01 01 82 00 04 00 00 01 
+9/2/2017  3:24:58:688 PM  RX: C0 00 02 00 22 00 00 01 00 03 01 01 00 00 00 04 
+
+//write DM5 := 5;				            MC SC    DM4      //no  //data
+9/2/2017  3:26:32:382 PM  TX: 80 00 02 00 01 00 00 22 00 03 01 02 82 00 04 00 00 01 00 05 
+9/2/2017  3:26:32:390 PM  RX: C0 00 02 00 22 00 00 01 00 03 01 02 00 00 
+
+//read DM4 = 5
+9/2/2017  3:26:32:402 PM  TX: 80 00 02 00 01 00 00 22 00 03 01 01 82 00 04 00 00 01 
+9/2/2017  3:26:32:410 PM  RX: C0 00 02 00 22 00 00 01 00 03 01 01 00 00 00 05 
+
